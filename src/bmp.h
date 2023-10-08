@@ -11,5 +11,8 @@ typedef struct {
 
 void bmp_init(void);
 bmp_t* bmp_get(uint32_t id);
+bmp_t* bmp_alloc(uint32_t width, uint32_t height);
+void bmp_free(bmp_t* this);
+bmp_t* bmp_load(const char* filepath);
 
 #endif

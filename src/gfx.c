@@ -44,6 +44,25 @@ void gfx_bmp(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId)
     }
 }
 
+void gfx_bmp2(wnd_t* window, uint32_t x, uint32_t y, bmp_t* bitmap, uint32_t mask, uint32_t color)
+{
+    for (size_t yy = 0; yy < bitmap->height; yy++)
+    {
+        size_t yo = y + yy;
+        if (yo < 0 || yo >= window->height) continue;
+        for (size_t xx = 0; xx < bitmap->width; xx++)
+        {
+            size_t xo = x + xx;
+            if (xo < 0 || xo >= window->width) continue;
+
+            uint32_t col = bitmap->pixels[xx + yy * bitmap->width];
+            if (col != mask) continue;
+
+            window->pixels[xo + yo * window->width] = color;
+        }
+    }
+}
+
 void gfx_floor_tile(wnd_t* window, uint32_t x, uint32_t y, uint32_t z, uint32_t bmpId)
 {
     x -= z;
