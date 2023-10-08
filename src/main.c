@@ -37,8 +37,19 @@ void main(void)
             }
         }
         gfx_fill(window, color);
-        gfx_rect(window, 50, 50, 100, 25, 0xff0000);
-        gfx_rect(window, 62, 25, 37, 37, 0x00ff00);
+    
+        for (size_t y = 0; y < 6; y++)
+        {
+            for (size_t x = 0; x < 3; x++)
+            {
+                if (x == 0) gfx_wall_tile(window, x, y, 0, 0, false);
+                if (y == 0) gfx_wall_tile(window, x, y, 0, 0, true);
+                
+                uint32_t bmpId = 5;
+                if (x == 1 && (y > 0 && y < 5)) bmpId = 1;
+                gfx_floor_tile(window, x, y, 0, bmpId);
+            }
+        }
 
         gfx_bmp(window, 130, 55, 0);
 

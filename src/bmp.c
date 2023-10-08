@@ -1,4 +1,6 @@
 #include "bmp.h"
+#include "col.h"
+#include "num.h"
 
 #include <stdlib.h>
 
@@ -34,6 +36,37 @@ void bmp_init(void)
         }
         s_BitmapError = bmp;
     }
+
+    // CARPET
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+
+        for (size_t y = 0; y < 8; y++)
+        {
+            for (size_t x = 0; x < 8; x++)
+            {
+                uint32_t col = 0xFF << 16;
+                uint32_t darken;
+                if (x > 1 && y > 1 && x < 6 && y < 6) darken = 24 + rnd_next(8);
+                else if (x > 0 && y > 0 && x < 7 && y < 7) darken = 20 + rnd_next(8);
+                else darken = 29 + rnd_next(8);
+                bmp->pixels[x + y * 8] = col_darken(col, darken, 48);
+            }
+        }
+        s_BitmapCarpet = bmp;
+    }
+
+    // GRASS TOP
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+
+        for (size_t i = 0; i < 64; i++)
+        {
+            bmp->pixels[i] = col_darken(0x1CBC26, 28 + rnd_next(8), 48);
+        }
+
+        s_BitmapGrassTop = bmp;
+    }
 }
 
 bmp_t* bmp_get(uint32_t bmpId)
@@ -41,6 +74,8 @@ bmp_t* bmp_get(uint32_t bmpId)
     switch (bmpId)
     {
     case 0: return s_BitmapError;
+    case 1: return s_BitmapCarpet;
+    case 5: return s_BitmapGrassTop;
     default: return s_BitmapError;
     }
 }
