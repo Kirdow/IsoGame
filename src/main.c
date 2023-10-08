@@ -3,9 +3,13 @@
 #include <SDL.h>
 #include <stdbool.h>
 #include "wnd.h"
+#include "gfx.h"
+#include "bmp.h"
 
 void main(void)
 {
+    bmp_init();
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("Failed to initialize SDL2\r\n");
@@ -32,9 +36,11 @@ void main(void)
                 running = false;
             }
         }
+        gfx_fill(window, color);
+        gfx_rect(window, 50, 50, 100, 25, 0xff0000);
+        gfx_rect(window, 62, 25, 37, 37, 0x00ff00);
 
-        for (int i = 0; i < window->width * window->height; ++i)
-            window->pixels[i] = color;
+        gfx_bmp(window, 130, 55, 0);
 
         wnd_flush(window);
         wnd_sync(60);
