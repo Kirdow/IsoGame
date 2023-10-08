@@ -5,6 +5,6 @@ rmdir /S /Q dist
 mkdir build
 mkdir dist
 @REM C COMPILE + LINK
-cl src\num.c src\col.c src\gfx.c src\bmp.c src\wnd.c src\main.c /Iinclude\ /link libs\SDL2.lib /out:dist\isogame.exe
+cl src\level.c src\num.c src\col.c src\gfx.c src\bmp.c src\wnd.c src\main.c /Iinclude\ /link libs\SDL2.lib /out:dist\isogame.exe
 @REM COPY FILES
 copy libs\SDL2.dll dist\SDL2.dll

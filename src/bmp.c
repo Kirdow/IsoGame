@@ -3,6 +3,7 @@
 #include "num.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 static bmp_t* s_BitmapError = NULL;
 static bmp_t* s_BitmapCarpet = NULL;
@@ -56,6 +57,60 @@ void bmp_init(void)
         s_BitmapCarpet = bmp;
     }
 
+    // ROCK
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+        for (size_t y = 0; y < 8; y++)
+        {
+            for (size_t x = 0; x < 8; x++)
+            {
+                uint32_t col = 0xFF;
+                col |= col << 16 | col << 8;
+
+                uint32_t darken;
+                if (x == 0 || y == 0 || x == 7 || y == 7) darken = 32 + rnd_next(8);
+                else darken = 24 + rnd_next(8);
+
+                bmp->pixels[x + y * 8] = col_darken(col, darken, 48);
+            }
+        }
+
+        s_BitmapRock = bmp;
+    }
+
+    // WOOD
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+        for (size_t y = 0; y < 8; y++)
+        {
+            for (size_t x = 0; x < 8; x++)
+            {
+                bool xIndex = (x / 2) % 2 == 0;
+                bool zIndex = (x / 4) % 4 == 0;
+
+                uint32_t darken = (xIndex ? 22 : 32) + (zIndex ? 0 : 1) + rnd_next(8);
+
+                bmp->pixels[x + y * 8] = col_darken(0xAF9142, darken, 48);
+            }
+        }
+
+        s_BitmapWood = bmp;
+    }
+
+    // DIRT
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+        for (size_t y = 0; y < 8; y++)
+        {
+            for (size_t x = 0; x < 8; x++)
+            {
+                bmp->pixels[x + y * 8] = col_darken(0x7A411A, 36 + rnd_next(8), 48);
+            }
+        }
+    
+        s_BitmapDirt = bmp;
+    }
+
     // GRASS TOP
     {
         bmp_t* bmp = bmp_alloc(8, 8);
@@ -67,6 +122,71 @@ void bmp_init(void)
 
         s_BitmapGrassTop = bmp;
     }
+
+    // GRASS SIDE
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+        for (size_t x = 0; x < 8; x++)
+        {
+            uint32_t d = 1 + rnd_next(3);
+            for (size_t y = 0; y < 8; y++)
+            {
+                uint32_t col;
+                if (y < d)
+                    col = col_darken(0x1CBC26, 28 + rnd_next(8), 48);
+                else
+                    col = s_BitmapDirt->pixels[x + y * 8];
+
+                bmp->pixels[x + y * 8] = col;
+            }
+        }
+
+        s_BitmapGrassSide = bmp;
+    }
+
+    // GLASS
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+        for (size_t y = 0; y < 8; y++)
+        {
+            for (size_t x = 0; x < 8; x++)
+            {
+                uint32_t col = 0xFF00FF;
+                if (
+                    (
+                        (x % 7 == 0 || y % 7 == 0) && ((x + 1) % 3 != 0 && (y + 1) % 3 != 0)
+                    ) || (
+                        (x + 1) % 5 == 0 && (y + 1) % 5 == 0
+                    )
+                )
+                {
+                    col = 0xFFFFFF;
+                }
+
+                bmp->pixels[x + y * 8] = col;
+            }
+        }
+
+        s_BitmapGlass = bmp;
+    }
+
+    // LEAF
+    {
+        bmp_t* bmp = bmp_alloc(8, 8);
+        for (size_t y = 0; y < 8; y++)
+        {
+            for (size_t x = 0; x < 8; x++)
+            {
+                uint32_t col;
+                if (rnd_next(5) < 2) col = 0xFF00FF;
+                else col = col_darken(0x1CBC26, 28 + rnd_next(8), 48);
+                bmp->pixels[x + y * 8] = col;
+            }
+        }
+
+        s_BitmapLeaf = bmp;
+    }
+
 }
 
 bmp_t* bmp_get(uint32_t bmpId)
@@ -75,7 +195,13 @@ bmp_t* bmp_get(uint32_t bmpId)
     {
     case 0: return s_BitmapError;
     case 1: return s_BitmapCarpet;
+    case 2: return s_BitmapRock;
+    case 3: return s_BitmapWood;
+    case 4: return s_BitmapDirt;
     case 5: return s_BitmapGrassTop;
+    case 6: return s_BitmapGrassSide;
+    case 7: return s_BitmapGlass;
+    case 8: return s_BitmapLeaf;
     default: return s_BitmapError;
     }
 }
