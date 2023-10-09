@@ -1,7 +1,7 @@
 #ifndef _FONT_H
 #define _FONT_H
 
-#include "wnd.h"
+#include "core/wnd.h"
 
 #define FONT_DIR_LEFT -1
 #define FONT_DIR_RIGHT 1

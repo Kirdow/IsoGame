@@ -1,7 +1,7 @@
 #ifndef _LEVEL_H
 #define _LEVEL_H
 
-#include "wnd.h"
+#include "core/wnd.h"
 
 #include <stdint.h>
 #include <stdbool.h>

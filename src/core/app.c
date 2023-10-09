@@ -1,11 +1,11 @@
 #include "app.h"
 
 #include "wnd.h"
-#include "level.h"
-#include "gfx.h"
-#include "font.h"
-#include "ticker.h"
-#include "timer.h"
+#include "level/level.h"
+#include "gfx/gfx.h"
+#include "gfx/font.h"
+#include "util/ticker.h"
+#include "util/timer.h"
 
 #include <stdlib.h>
 #include <string.h>

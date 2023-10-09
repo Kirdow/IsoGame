@@ -1,6 +1,6 @@
-#include "bmp.h"
-#include "num.h"
-#include "col.h"
+#include "../bmp.h"
+#include "util/num.h"
+#include "gfx/col.h"
 
 bmp_t* bmp_leaf(void)
 {

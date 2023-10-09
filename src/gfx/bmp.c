@@ -1,6 +1,6 @@
 #include "bmp.h"
 #include "col.h"
-#include "num.h"
+#include "util/num.h"
 
 #include <stdlib.h>
 #include <stdbool.h>

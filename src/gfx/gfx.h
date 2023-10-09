@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "wnd.h"
+#include "core/wnd.h"
 #include "bmp.h"
 
 void gfx_fill(wnd_t* window, uint32_t color);

@@ -1,7 +1,7 @@
-#include "bmp.h"
-#include "num.h"
-#include "col.h"
-#include "level.h"
+#include "../bmp.h"
+#include "util/num.h"
+#include "gfx/col.h"
+#include "level/level.h"
 
 bmp_t* bmp_grass_side(void)
 {

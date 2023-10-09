@@ -1,4 +1,4 @@
-#include "bmp.h"
+#include "../bmp.h"
 
 bmp_t* bmp_glass(void)
 {

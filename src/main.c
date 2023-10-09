@@ -1,11 +1,11 @@
 #include <stdio.h>
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
-#include "bmp.h"
-#include "num.h"
-#include "font.h"
-#include "app.h"
-#include "ktime.h"
+#include "gfx/bmp.h"
+#include "gfx/font.h"
+#include "core/app.h"
+#include "util/ktime.h"
+#include "util/num.h"
 
 void main(void)
 {

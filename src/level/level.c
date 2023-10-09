@@ -1,5 +1,5 @@
 #include "level.h"
-#include "gfx.h"
+#include "gfx/gfx.h"
 
 #include <stdlib.h>
 

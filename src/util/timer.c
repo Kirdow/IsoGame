@@ -1,5 +1,5 @@
-#include "timer.h"
-#include "ktime.h"
+#include "util/timer.h"
+#include "util/ktime.h"
 
 void timer_create(timer_t* timer, uint32_t interval)
 {

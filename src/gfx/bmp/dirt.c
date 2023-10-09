@@ -1,6 +1,6 @@
-#include "bmp.h"
-#include "num.h"
-#include "col.h"
+#include "../bmp.h"
+#include "gfx/col.h"
+#include "util/num.h"
 
 bmp_t* bmp_dirt(void)
 {

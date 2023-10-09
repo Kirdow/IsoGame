@@ -1,7 +1,7 @@
 #include "font.h"
 #include "bmp.h"
 #include "gfx.h"
-#include "strutil.h"
+#include "util/strutil.h"
 
 #include <stdio.h>
 #include <stdlib.h>
