@@ -5,6 +5,7 @@ dist/
 # files
 *.obj
 *.exe
+gen.bat
 
 # ide directories
 .vs/
