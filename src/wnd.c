@@ -73,6 +73,39 @@ wnd_t* wnd_create(const char* title, uint32_t width, uint32_t height)
     return wnd;
 }
 
+void wnd_close(wnd_t* this)
+{
+    if (!this) return;
+
+    if (this->pixels)
+    {
+        memset(this->pixels, 0, sizeof(uint32_t) * this->width * this->height);
+        free(this->pixels);
+        this->pixels = NULL;
+    }
+
+    if (this->texture)
+    {
+        SDL_DestroyTexture(this->texture);
+        this->texture = NULL;
+    }
+
+    if (this->renderer)
+    {
+        SDL_DestroyRenderer(this->renderer);
+        this->renderer = NULL;
+    }
+
+    if (this->window)
+    {
+        SDL_DestroyWindow(this->window);
+        this->window = NULL;
+    }
+
+    memset(this, 0, sizeof(wnd_t));
+    free(this);
+}
+
 void wnd_flush(wnd_t* this)
 {
     SDL_UpdateTexture(this->texture, NULL, this->pixels, this->width * sizeof(uint32_t));

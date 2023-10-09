@@ -16,6 +16,7 @@ typedef struct {
 } wnd_t;
 
 wnd_t* wnd_create(const char* title, uint32_t width, uint32_t height);
+void wnd_close(wnd_t* this);
 void wnd_flush(wnd_t* this);
 void wnd_sync(uint32_t rate);
 
