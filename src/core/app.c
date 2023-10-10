@@ -6,10 +6,12 @@
 #include "gfx/font.h"
 #include "util/ticker.h"
 #include "util/timer.h"
+#include "util/kmath.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 #include <SDL.h>
 
@@ -70,6 +72,8 @@ bool app_init(app_start_t* start_info)
     ticker_create(&s_App.frame_ticker, 1000);
     ticker_create(&s_App.tick_ticker, 1000);
     timer_create(&s_App.tick_timer, 1000 / 50);
+
+    return true;
 }
 
 bool app_active(void)
@@ -124,7 +128,7 @@ static void app_tick(void)
 
 static void app_generate_level(level_t* level)
 {
-    size_t xsize = min(level->size, 7);
+    size_t xsize = smin(level->size, 7);
     for (size_t x = 0; x < xsize; x++)
     {
         for (size_t z = 0; z < 3; z++)

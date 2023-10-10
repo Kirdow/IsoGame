@@ -75,7 +75,7 @@ static void font_draw_color2(wnd_t* window, const char* text, uint32_t x, uint32
     if (dir < 0) x += dir * 8;
     size_t startX = x;
     size_t startY = y;
-    char* data = text;
+    char* data = (char*)text;
     if (dir < 0) data = str_reverse_lines(text);
     char* ptr = (char*)data;
     while (*ptr)

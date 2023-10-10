@@ -6,8 +6,9 @@
 #include "core/app.h"
 #include "util/ktime.h"
 #include "util/num.h"
+#include "util/kmath.h"
 
-void main(void)
+int main(void)
 {
     rnd_start();
     bmp_init();
@@ -21,7 +22,7 @@ void main(void)
     if (!app_init(&start_info))
     {
         printf("Failed to start IsoGame\r\n");
-        return;
+        return 1;
     }
 
     while (app_active())
@@ -31,4 +32,6 @@ void main(void)
     }
 
     app_close();
+
+    return 0;
 }

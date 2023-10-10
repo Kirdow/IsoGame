@@ -1,5 +1,6 @@
 #include "gfx.h"
 #include "bmp.h"
+#include "col.h"
 
 void gfx_fill(wnd_t* window, uint32_t color)
 {
