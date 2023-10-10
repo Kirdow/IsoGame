@@ -3,11 +3,22 @@ This project is about re-creating a rendering dmo I made in Java where I rendere
 
 With this project, I'm working in C under windows. *[You may have seen my other project where I made this in x64 Assembly](https://github.com/Kirdow/IsoGameAsm)*.
 
-In order to build you would need Visual Studio 2022 installed (others may be compatible), then open `x64 Native Tools Command Prompt for VS 2022` and navigate to the repository directory. Then run `build.bat` to build and `run.bat` to run.
+# Build & Run
+The build pipeline uses a normal Makefile.
 
-I can't guarantee it will work flawlessly, this is merely a backup of my code.
+Currently made on Windows using [MSYS2 MINGW64](https://www.msys2.org/). Linux and macOS may be supported but you'd have to find your own copies of SDL2 for now.
 
-Enjoy.
+In order to build, open a terminal in the repository directory and run these commands:
+### Build
+```sh
+make
+```
+
+### Run
+```sh
+make run
+```
+*You can also run the executable directly in `./dist/isogame` if you don't want to rebuild. Only works if you built at least once though.*
 
 # License
 IsoGame \[C\] is licensed under [MIT License](https://github.com/Kirdow/IsoGame/blob/master/LICENSE).
