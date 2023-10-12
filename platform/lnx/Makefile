@@ -6,7 +6,7 @@ DIST_DIR := ./dist
 
 SRCS := $(shell find $(SRC_DIRS) -name '*.c')
 
-OBJS := $(SRCS:%=$(BUILD_DIR)%.o)
+OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 DEPS := $(OBJS:.o=.d)
 
@@ -27,8 +27,8 @@ $(DIST_DIR)/$(TARGET_EXEC): $(OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
-$(BUILD_DIR)/%.c.o: %.cflags
-	mkdir --o $(dir $@)
+$(BUILD_DIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean

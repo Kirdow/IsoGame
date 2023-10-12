@@ -30,7 +30,7 @@ $(DIST_DIR)/$(TARGET_EXEC): $(OBJS)
 	mkdir -p $(dir $@)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
-$(BUILD_DIR)/$.c.o: %.c
+$(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
