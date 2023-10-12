@@ -108,6 +108,7 @@ inline static ivec_t _ivec_add(ivec_t lhs, ivec_t rhs)
     ivec_t v;
     v.x = lhs.x + rhs.x;
     v.y = lhs.y + rhs.y;
+    return v;
 }
 
 inline static ivec_t _ivec_sub(ivec_t lhs, ivec_t rhs)

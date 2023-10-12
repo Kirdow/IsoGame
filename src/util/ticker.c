@@ -24,7 +24,7 @@ void ticker_tick(ticker_t* ticker)
         float passedFactor = (float)ticks / (float)ticker->interval;
         float tpi = (float)ticker->ticks / (float)passedFactor;
         memset(ticker->tpi, 0, sizeof(char) * TICKER_TPI_SIZE);
-        sprintf_s(ticker->tpi, TICKER_TPI_LEN, "%.1f", tpi);
+        sprintf(ticker->tpi, "%.1f", tpi);
         
         ticker->ticks = 0;
     }

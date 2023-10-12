@@ -217,11 +217,11 @@ static void app_fps_display(void)
     {
         memset(s_FpsBuffer, 0, sizeof(char) * FPS_BUFFER_SIZE);
         if (s_App.tick_ticker.tpi[0] && s_App.frame_ticker.tpi[0])
-            sprintf_s(s_FpsBuffer, FPS_BUFFER_LEN, "%s T/%s F", s_App.tick_ticker.tpi, s_App.frame_ticker.tpi);
+            sprintf(s_FpsBuffer, "%s T/%s F", s_App.tick_ticker.tpi, s_App.frame_ticker.tpi);
         else if (s_App.tick_ticker.tpi[0])
-            sprintf_s(s_FpsBuffer, FPS_BUFFER_LEN, "%s T", s_App.tick_ticker.tpi);
+            sprintf(s_FpsBuffer, "%s T", s_App.tick_ticker.tpi);
         else
-            sprintf_s(s_FpsBuffer, FPS_BUFFER_LEN, "%s F", s_App.frame_ticker.tpi);
+            sprintf(s_FpsBuffer, "%s F", s_App.frame_ticker.tpi);
         
         font_draw(s_App.window, s_FpsBuffer, s_App.window->width - 10, 10, FONT_DIR_LEFT);
     }
