@@ -7,6 +7,9 @@ dist/
 *.exe
 gen.bat
 
+Makefile
+!platform/*/Makefile
+
 # ide directories
 .vs/
 .vscode/
