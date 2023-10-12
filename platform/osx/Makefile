@@ -1,7 +1,7 @@
 TARGET_EXEC := isogame
 
 BUILD_DIR := ./build
-SRC_DIRS := ./src ./include
+SRC_DIRS := ./src ./include/stb
 DIST_DIR := ./dist
 
 SRCS := $(shell find $(SRC_DIRS) -name '*.c')
