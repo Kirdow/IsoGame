@@ -1,5 +1,6 @@
 #include "wnd.h"
 #include <string.h>
+#include <stdio.h>
 
 wnd_t* wnd_create(const char* title, uint32_t width, uint32_t height)
 {
