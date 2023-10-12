@@ -11,7 +11,7 @@ bmp_t* bmp_error(void)
         {
             size_t xIndex = x / 4;
 
-            uint32_t c = ((xIndex + yIndex) % 2) == 0 ? 0x7F007F : 0x00FF00;
+            uint32_t c = ((xIndex + yIndex) % 2) == 0 ? 0xFE00FE : 0x000000;
             bmp->pixels[x + y * 8] = c;
         }
     }

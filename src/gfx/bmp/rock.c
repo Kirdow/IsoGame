@@ -14,8 +14,8 @@ bmp_t* bmp_rock(void)
             col |= col << 16 | col << 8;
 
             uint32_t darken;
-            if (x == 0 || y == 0 || x == 7 || y == 7) darken = 32 + rnd_next(8);
-            else darken = 24 + rnd_next(8);
+            if (x == 0 || y == 0 || x == 7 || y == 7) darken = 26 + rnd_next(8);
+            else darken = 22 + rnd_next(8) * 2;
 
             bmp->pixels[x + y * 8] = col_darken(col, darken, 48);
         }
