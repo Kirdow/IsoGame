@@ -2,6 +2,8 @@
 #include "bmp.h"
 #include "col.h"
 
+#include "level/tiles/tile.h"
+
 void gfx_fill(wnd_t* window, uint32_t color)
 {
     for (size_t i = 0; i < window->width * window->height; i++)
@@ -22,6 +24,23 @@ void gfx_rect(wnd_t* window, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uin
             window->pixels[xo + yo * window->width] = color;
         }
     }
+}
+
+uint32_t gfx_run_shader(uint32_t color, uint32_t src, uint32_t dst)
+{
+    uint32_t cr = (color >> 16) & 0xFF;
+    uint32_t cg = (color >> 8) & 0xFF;
+    uint32_t cb = (color) & 0xFF;
+
+    uint32_t sr = (src >> 16) & 0xFF;
+    uint32_t sg = (src >> 8) & 0xFF;
+    uint32_t sb = (src) & 0xFF;
+
+    uint32_t dr = (dst >> 16) & 0xFF;
+    uint32_t dg = (dst >> 8) & 0xFF;
+    uint32_t db = (dst) & 0xFF;
+
+    return col_clamp(cr * dr / sr) << 16 | col_clamp(cg * dg / sg) << 8 | col_clamp(cb * db / sb);
 }
 
 void gfx_bmp(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId)
@@ -66,18 +85,26 @@ void gfx_bmp2(wnd_t* window, uint32_t x, uint32_t y, bmp_t* bitmap, uint32_t mas
 
 void gfx_floor_tile(wnd_t* window, uint32_t x, uint32_t y, uint32_t z, uint32_t bmpId)
 {
+    gfx_world_data_t data;
+    data.x = x;
+    data.y = y;
+    data.z = z;
+
     x -= z;
     y -= z;
 
     uint32_t worldX = (x - y) * 16 + window->width / 2;
     uint32_t worldY = (x + y) * 8 + window->height / 2;
 
-    gfx_floor(window, worldX, worldY, bmpId);
+    gfx_floor(window, worldX, worldY, bmpId, &data);
 }
 
-void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId)
+void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, gfx_world_data_t* world_data)
 {
+    tile_t* tile = tile_get(bmpId);
     bmp_t* bitmap = bmp_get(bmpId);
+    bmp_t* shader = tile_bmp_shader();
+    tilespec_t spec = tile->spec;
 
     size_t size = 32;
     size_t halfsize = size / 2;
@@ -110,6 +137,14 @@ void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId)
             if (xPix < 0 || yPix < 0 || xPix >= window->width || yPix >= window->height) continue;
             rawBitmapPixel = bitmap->pixels[xtd + ytd * bitmap->width];
             if (rawBitmapPixel == 0xFF00FF) continue;
+            uint32_t shadeX = (world_data->x * 8 + xtd) % shader->width;
+            uint32_t shadeY = (world_data->z * 8 + ytd) % shader->height;
+            if (TILESPEC_IS_SHADE(tile->spec))
+                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, 0xFFFFFF, shader->pixels[shadeX + shadeY * shader->width]);
+            
+            if (TILESPEC_IS_SPECULAR(tile->spec))
+                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, shader->pixels[shadeX + shadeY * shader->width], 0xFFFFFF);
+            
             window->pixels[xPix + yPix * window->width] = rawBitmapPixel;
         }
     }
@@ -117,18 +152,26 @@ void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId)
 
 void gfx_wall_tile(wnd_t* window, uint32_t x, uint32_t y, uint32_t z, uint32_t bmpId, bool right)
 {
+    gfx_world_data_t data;
+    data.x = x;
+    data.y = y;
+    data.z = z;
+
     x -= z;
     y -= z;
 
     uint32_t worldX = (x - y) * 16 + window->width / 2;
     uint32_t worldY = (x + y) * 8 + window->height / 2;
 
-    gfx_wall(window, worldX, worldY, bmpId, right);
+    gfx_wall(window, worldX, worldY, bmpId, right, &data);
 }
 
-void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right)
+void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right, gfx_world_data_t* world_data)
 {
+    tile_t* tile = tile_get(bmpId);
     bmp_t* bitmap = bmp_get(bmpId);
+    bmp_t* shader = tile_bmp_shader();
+    tilespec_t spec = tile->spec;
 
     size_t size = 32;
 
@@ -165,6 +208,14 @@ void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right)
             if (xPix < 0 || yPix < 0 || xPix >= window->width || yPix >= window->height) continue;
             rawBitmapPixel = bitmap->pixels[xtd + ytd * bitmap->width];
             if (rawBitmapPixel == 0xFF00FF) continue;
+            uint32_t shadeX = ((world_data->x + world_data->y) * 8 + xtd) % shader->width;
+            uint32_t shadeY = (world_data->z * 8 + ytd) % shader->height;
+            if (TILESPEC_IS_SHADE(tile->spec))
+                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, 0xFFFFFF, shader->pixels[shadeX + shadeY * shader->width]);
+            
+            if (TILESPEC_IS_SPECULAR(tile->spec))
+                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, shader->pixels[shadeX + shadeY * shader->width], 0xFFFFFF);
+            
             window->pixels[xPix + yPix * window->width] = col_darken(rawBitmapPixel, right ? 28 : 25, 32);
         }
     }

@@ -108,3 +108,15 @@ bmp_t* bmp_load(const char* filepath)
     stbi_image_free(data);
     return bmp;
 }
+
+bool bmp_copy(bmp_t* dst, bmp_t* src)
+{
+    if (dst == NULL || src == NULL) return false;
+    if (dst->width != src->width || dst->height != src->height) return false;
+
+    size_t len = src->width * src->height;
+    for (size_t i = 0; i < len; i++)
+    {
+        dst->pixels[i] = src->pixels[i];
+    }
+}

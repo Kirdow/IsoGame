@@ -2,6 +2,7 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include "gfx/bmp.h"
+#include "level/tiles/tile.h"
 #include "gfx/font.h"
 #include "core/app.h"
 #include "util/ktime.h"
@@ -12,6 +13,7 @@ int main(void)
 {
     rnd_start();
     bmp_init();
+    tile_init();
     font_init();
 
     app_start_t start_info;
