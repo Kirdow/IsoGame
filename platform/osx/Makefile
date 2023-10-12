@@ -16,8 +16,8 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 SDL_INCLUDE_PATH := $(shell brew --prefix sdl2)/include/SDL2
 CFLAGS := $(INC_FLAGS) -I$(SDL_INCLUDE_PATH) -MMD -MP
 
-SDL_LIBRARY_PATH := $(shell brew --prefix sdl2)/Llibs
-LDFLAGS := L$(SDL_LIBRARY_PATH) -lSDL2
+SDL_LIBRARY_PATH := $(shell brew --prefix sdl2)/lib
+LDFLAGS := -L$(SDL_LIBRARY_PATH) -lSDL2
 
 all: build
 
