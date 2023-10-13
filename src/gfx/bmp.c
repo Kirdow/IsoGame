@@ -119,4 +119,6 @@ bool bmp_copy(bmp_t* dst, bmp_t* src)
     {
         dst->pixels[i] = src->pixels[i];
     }
+
+    return true;
 }

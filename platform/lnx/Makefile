@@ -13,7 +13,9 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CFLAGS := $(INC_FLAGS) -MMD -MP `pkg-flags --cflags sdl2`
+CFLAGS_WARNINGS := -Wall -Wextra -Werror -Wno-error=unused-function
+
+CFLAGS := $(INC_FLAGS) -MMD -MP `pkg-flags --cflags sdl2` $(CFLAGS_WARNINGS)
 LDFLAGS := `pkg-config --libs sdl2`
 
 all: build

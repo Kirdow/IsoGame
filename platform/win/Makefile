@@ -13,7 +13,9 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CFLAGS := $(INC_FLAGS) -MMD -MP
+CFLAGS_WARNINGS := -Wall -Wextra -Werror -Wno-error=unused-function
+
+CFLAGS := $(INC_FLAGS) -MMD -MP $(CFLAGS_WARNINGS)
 LDFLAGS= -Llibs -lSDL2
 
 all: build

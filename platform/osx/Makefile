@@ -13,8 +13,10 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
+CFLAGS_WARNINGS := -Wall -Wextra -Werror -Wno-error=unused-function
+
 SDL_INCLUDE_PATH := $(shell brew --prefix sdl2)/include/SDL2
-CFLAGS := $(INC_FLAGS) -I$(SDL_INCLUDE_PATH) -MMD -MP
+CFLAGS := $(INC_FLAGS) -I$(SDL_INCLUDE_PATH) -MMD -MP $(CFLAGS_WARNINGS)
 
 SDL_LIBRARY_PATH := $(shell brew --prefix sdl2)/lib
 LDFLAGS := -L$(SDL_LIBRARY_PATH) -lSDL2

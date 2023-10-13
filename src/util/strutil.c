@@ -16,7 +16,7 @@ char* str_reverse_lines(const char* text)
     {
         char* end = pos ? pos : (result + len);
         size_t plen = (int)(end - ptr);
-        for (size_t i = 0; i < (int)(end - ptr) / 2; i++)
+        for (size_t i = 0; i < (size_t)(end - ptr) / 2; i++)
         {
             char tmp = ptr[i];
             ptr[i] = ptr[plen - i - 1];

@@ -18,7 +18,7 @@ void gfx_rect(wnd_t* window, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uin
         if (yo < 0 || yo >= window->height) continue;
         for (size_t xx = 0; xx < w; xx++)
         {
-            int xo = x + xx;
+            size_t xo = x + xx;
             if (xo < 0 || xo >= window->width) continue;
 
             window->pixels[xo + yo * window->width] = color;
@@ -104,7 +104,6 @@ void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, gfx_world_
     tile_t* tile = tile_get(bmpId);
     bmp_t* bitmap = bmp_get(bmpId);
     bmp_t* shader = tile_bmp_shader();
-    tilespec_t spec = tile->spec;
 
     size_t size = 32;
     size_t halfsize = size / 2;
@@ -114,13 +113,13 @@ void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, gfx_world_
     uint32_t rawBitmapPixel;
     for (size_t yo = 0; yo <= size; yo++)
     {
-        size_t yt = yo * bitmap->height / halfsize;
-        size_t ytd = yt / 2;
+        uint32_t yt = yo * bitmap->height / halfsize;
+        uint32_t ytd = yt / 2;
         if (ytd >= bitmap->height) ytd = bitmap->height - 1;
         for (size_t xo = 0; xo <= size; xo++)
         {
-            size_t xt = xo * bitmap->width / halfsize;
-            size_t xtd = xt / 2;
+            uint32_t xt = xo * bitmap->width / halfsize;
+            uint32_t xtd = xt / 2;
             if (xtd >= bitmap->width) xtd = bitmap->width - 1;
 
             int32_t xPix = 0, yPix = 0;
@@ -134,7 +133,7 @@ void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, gfx_world_
             xPix = startX + xPix / 2;
             yPix = startY + yPix / 2;
 
-            if (xPix < 0 || yPix < 0 || xPix >= window->width || yPix >= window->height) continue;
+            if ((int32_t)xPix < 0 || (int32_t)yPix < 0 || (uint32_t)xPix >= window->width || (uint32_t)yPix >= window->height) continue;
             rawBitmapPixel = bitmap->pixels[xtd + ytd * bitmap->width];
             if (rawBitmapPixel == 0xFF00FF) continue;
             uint32_t shadeX = (world_data->x * 8 + xtd) % shader->width;
@@ -171,7 +170,6 @@ void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right,
     tile_t* tile = tile_get(bmpId);
     bmp_t* bitmap = bmp_get(bmpId);
     bmp_t* shader = tile_bmp_shader();
-    tilespec_t spec = tile->spec;
 
     size_t size = 32;
 
@@ -186,13 +184,13 @@ void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right,
     uint32_t rawBitmapPixel;
     for (size_t yo = 0; yo <= size * 2; yo++)
     {
-        size_t yt = yo * bitmap->height / size;
-        size_t ytd = yt / 2;
+        uint32_t yt = yo * bitmap->height / size;
+        uint32_t ytd = yt / 2;
         if (ytd >= bitmap->height) ytd = bitmap->height - 1;
         for (size_t xo = 0; xo <= size; xo++)
         {
-            size_t xt = xo * bitmap->width / (size / 2);
-            size_t xtd = xt / 2;
+            uint32_t xt = xo * bitmap->width / (size / 2);
+            uint32_t xtd = xt / 2;
             if (xtd >= bitmap->width) xtd = bitmap->width - 1;
 
             int32_t xPix = 0, yPix = 0;
@@ -205,7 +203,7 @@ void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right,
             xPix = startX + xPix / 2;
             yPix = startY + yPix / 2;
 
-            if (xPix < 0 || yPix < 0 || xPix >= window->width || yPix >= window->height) continue;
+            if (xPix < 0 || yPix < 0 || (uint32_t)xPix >= window->width || (uint32_t)yPix >= window->height) continue;
             rawBitmapPixel = bitmap->pixels[xtd + ytd * bitmap->width];
             if (rawBitmapPixel == 0xFF00FF) continue;
             uint32_t shadeX = ((world_data->x + world_data->y) * 8 + xtd) % shader->width;
