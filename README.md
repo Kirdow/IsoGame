@@ -34,9 +34,10 @@ sudo pacman -S sdl2
 If your distro doesn't use either of those, adapt to whichever your distro uses. Some distros/package managers may need both `sdl2` and `sdl2-devel`.
 
 ## Building and Running
-If you got all the required libraries and files, building is fairly simple.
-
+If you got all the required libraries and files, building is fairly simple.<br>
 You may need to run `chmod +x ./exec.sh` if you lack permissions on Linux and macOS.
+
+*__Note:__ If you simply run `./exec.sh` without arguments, it currently does both.*
 ### Building
 ```sh
 ./exec.sh build
@@ -47,7 +48,6 @@ You may need to run `chmod +x ./exec.sh` if you lack permissions on Linux and ma
 ./exec.sh run
 ```
 
-If you simply run `./exec.sh` without arguments, it currently does both.
 
 # License
 IsoGame \[C\] is licensed under [MIT License](https://github.com/Kirdow/IsoGame/blob/master/LICENSE).

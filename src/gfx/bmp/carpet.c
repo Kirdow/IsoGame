@@ -12,9 +12,9 @@ bmp_t* bmp_carpet(void)
         {
             uint32_t col = 0xFF << 16;
             uint32_t darken;
-            if (x > 1 && y > 1 && x < 6 && y < 6) darken = 24 + rnd_next(8);
-            else if (x > 0 && y > 0 && x < 7 && y < 7) darken = 20 + rnd_next(8);
-            else darken = 29 + rnd_next(8);
+            if (x > 1 && y > 1 && x < 6 && y < 6) darken = 23 + rnd_next(8);
+            else if (x > 0 && y > 0 && x < 7 && y < 7) darken = 22 + rnd_next(8);
+            else darken = 25 + rnd_next(6);
             bmp->pixels[x + y * 8] = col_darken(col, darken, 48);
         }
     }

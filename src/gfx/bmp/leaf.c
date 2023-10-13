@@ -11,7 +11,7 @@ bmp_t* bmp_leaf(void)
         {
             uint32_t col;
             if (rnd_next(5) < 2) col = 0xFF00FF;
-            else col = col_darken(0x1CBC26, 28 + rnd_next(8), 48);
+            else col = col_darken(0x1CBC26, 20 + rnd_next(5) * 2, 48);
             bmp->pixels[x + y * 8] = col;
         }
     }
