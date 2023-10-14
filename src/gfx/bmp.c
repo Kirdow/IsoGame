@@ -27,17 +27,21 @@ bmp_t* bmp_grass_side(void);
 bmp_t* bmp_glass(void);
 bmp_t* bmp_leaf(void);
 
+typedef bmp_t* (*fbmp_init_t)(void);
+
+static bmp_t* bmp_run_init(fbmp_init_t initfunc);
+
 void bmp_init(void)
 {
-    s_BitmapError = bmp_error();
-    s_BitmapCarpet = bmp_carpet();
-    s_BitmapRock = bmp_rock();
-    s_BitmapWood = bmp_wood();
-    s_BitmapDirt = bmp_dirt();
-    s_BitmapGrassTop = bmp_grass_top();
-    s_BitmapGrassSide = bmp_grass_side();
-    s_BitmapGlass = bmp_glass();
-    s_BitmapLeaf = bmp_leaf();
+    s_BitmapError = bmp_run_init(bmp_error);
+    s_BitmapCarpet = bmp_run_init(bmp_carpet);
+    s_BitmapRock = bmp_run_init(bmp_rock);
+    s_BitmapWood = bmp_run_init(bmp_wood);
+    s_BitmapDirt = bmp_run_init(bmp_dirt);
+    s_BitmapGrassTop = bmp_run_init(bmp_grass_top);
+    s_BitmapGrassSide = bmp_run_init(bmp_grass_side);
+    s_BitmapGlass = bmp_run_init(bmp_glass);
+    s_BitmapLeaf = bmp_run_init(bmp_leaf);
 }
 
 bmp_t* bmp_get(uint32_t bmpId)
@@ -121,4 +125,12 @@ bool bmp_copy(bmp_t* dst, bmp_t* src)
     }
 
     return true;
+}
+
+static bmp_t* bmp_run_init(fbmp_init_t initfunc)
+{
+    if (!initfunc) return NULL;
+
+    rnd_start();
+    return initfunc();
 }

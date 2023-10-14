@@ -9,9 +9,8 @@ bmp_t* bmp_dirt(void)
     {
         for (size_t x = 0; x < 8; x++)
         {
-            uint32_t r = rnd_next(10);
-            r = (r >= 4) ? (r + 4) : (r * 2);
-            bmp->pixels[x + y * 8] = col_darken(0x7A411A, 30 + r, 48);
+            uint32_t r = rnd_next(6) * 2;
+            bmp->pixels[x + y * 8] = col_darken(0x7A411A, 28 + r, 48);
         }
     }
 

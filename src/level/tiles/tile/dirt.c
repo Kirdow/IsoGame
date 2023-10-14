@@ -2,5 +2,5 @@
 
 tile_t* tile_init_dirt(void)
 {
-    return tile_setup_from(4, tilespec_shade);
+    return tile_setup_from(4, tilespec_none);
 }

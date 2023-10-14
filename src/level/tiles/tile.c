@@ -123,7 +123,7 @@ static void tile_init_draw_shape(bmp_t* dst, uint32_t x, uint32_t y, uint32_t w,
 }
 
 #define TILE_SHADER_CELLSIZE 5
-#define TILE_SHADER_SIZE (TILE_SHADER_CELLSIZE * 8)
+#define TILE_SHADER_SIZE (TILE_SHADER_CELLSIZE * 16)
 static void tile_init_shader(void)
 {
     if (s_BitmapShader) return;
@@ -132,13 +132,13 @@ static void tile_init_shader(void)
     for (size_t i = 0; i < TILE_SHADER_SIZE * TILE_SHADER_SIZE; i++)
         bmp->pixels[i] = 0xFFFFFF;
     
-    for (size_t y = 0; y < 8; y++)
+    for (size_t y = 0; y < 16; y++)
     {
         for (size_t x = 0; x < 8; x++)
         {
-            if ((y + x) % 2 == 0) continue;
+            if ((y + x / 2) % 2 == 0) continue;
 
-            tile_init_draw_shape(bmp, x * TILE_SHADER_CELLSIZE, y * TILE_SHADER_CELLSIZE, TILE_SHADER_CELLSIZE, TILE_SHADER_CELLSIZE, 0xE0E0E0);
+            tile_init_draw_shape(bmp, x * TILE_SHADER_CELLSIZE*2, y * TILE_SHADER_CELLSIZE, TILE_SHADER_CELLSIZE, TILE_SHADER_CELLSIZE, 0xE0E0E0);
         }
     }
 

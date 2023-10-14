@@ -4,6 +4,15 @@
 
 #include "level/tiles/tile.h"
 
+inline static bmp_t* gfx_get_shader(void)
+{
+    static bmp_t* s_Shader = NULL;
+
+    if (s_Shader == NULL) s_Shader = tile_bmp_shader();
+
+    return s_Shader;
+}
+
 void gfx_fill(wnd_t* window, uint32_t color)
 {
     for (size_t i = 0; i < window->width * window->height; i++)
@@ -26,21 +35,26 @@ void gfx_rect(wnd_t* window, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uin
     }
 }
 
-uint32_t gfx_run_shader(uint32_t color, uint32_t src, uint32_t dst)
+inline static uint32_t gfx_run_shader(uint32_t color, uint32_t shader, tilespec_t spec)
 {
-    uint32_t cr = (color >> 16) & 0xFF;
-    uint32_t cg = (color >> 8) & 0xFF;
-    uint32_t cb = (color) & 0xFF;
+    bool shade = spec & tilespec_shade;
+    if (spec == tilespec_none || spec == (tilespec_shade | tilespec_specular)) return color;
 
-    uint32_t sr = (src >> 16) & 0xFF;
-    uint32_t sg = (src >> 8) & 0xFF;
-    uint32_t sb = (src) & 0xFF;
+    uint32_t result = 0;
 
-    uint32_t dr = (dst >> 16) & 0xFF;
-    uint32_t dg = (dst >> 8) & 0xFF;
-    uint32_t db = (dst) & 0xFF;
+    uint32_t src = shade ? 0xFFFFFFFF : shader;
+    uint32_t dst = shade ? shader : 0xFFFFFFFF;
 
-    return col_clamp(cr * dr / sr) << 16 | col_clamp(cg * dg / sg) << 8 | col_clamp(cb * db / sb);
+    uint8_t* pcolor = (uint8_t*)&color;
+    uint8_t* psrc = (uint8_t*)&src;
+    uint8_t* pdst = (uint8_t*)&dst;
+    uint8_t* presult = (uint8_t*)&result;
+
+    for (size_t i = 0; i < 4; i++) {
+        presult[i] = (psrc[i] == 0) ? 0 : (pcolor[i] * pdst[i] / psrc[i]);
+    }
+
+    return result;
 }
 
 void gfx_bmp(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId)
@@ -138,12 +152,7 @@ void gfx_floor(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, gfx_world_
             if (rawBitmapPixel == 0xFF00FF) continue;
             uint32_t shadeX = (world_data->x * 8 + xtd) % shader->width;
             uint32_t shadeY = (world_data->z * 8 + ytd) % shader->height;
-            if (TILESPEC_IS_SHADE(tile->spec))
-                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, 0xFFFFFF, shader->pixels[shadeX + shadeY * shader->width]);
-            
-            if (TILESPEC_IS_SPECULAR(tile->spec))
-                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, shader->pixels[shadeX + shadeY * shader->width], 0xFFFFFF);
-            
+            rawBitmapPixel = gfx_run_shader(rawBitmapPixel, shader->pixels[shadeX + shadeY * shader->width], tile->spec);
             window->pixels[xPix + yPix * window->width] = rawBitmapPixel;
         }
     }
@@ -208,12 +217,7 @@ void gfx_wall(wnd_t* window, uint32_t x, uint32_t y, uint32_t bmpId, bool right,
             if (rawBitmapPixel == 0xFF00FF) continue;
             uint32_t shadeX = ((world_data->x + world_data->y) * 8 + xtd) % shader->width;
             uint32_t shadeY = (world_data->z * 8 + ytd) % shader->height;
-            if (TILESPEC_IS_SHADE(tile->spec))
-                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, 0xFFFFFF, shader->pixels[shadeX + shadeY * shader->width]);
-            
-            if (TILESPEC_IS_SPECULAR(tile->spec))
-                rawBitmapPixel = gfx_run_shader(rawBitmapPixel, shader->pixels[shadeX + shadeY * shader->width], 0xFFFFFF);
-            
+            rawBitmapPixel = gfx_run_shader(rawBitmapPixel, shader->pixels[shadeX + shadeY * shader->width], tile->spec);
             window->pixels[xPix + yPix * window->width] = col_darken(rawBitmapPixel, right ? 28 : 25, 32);
         }
     }
